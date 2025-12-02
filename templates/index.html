@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>📚 Biblioteca Flask</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        h1, h2 { color: #333; }
+        .livros-lista { border-collapse: collapse; width: 80%; margin-top: 20px; }
+        .livros-lista th, .livros-lista td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .livros-lista th { background-color: #f2f2f2; }
+        .disponivel-true { color: green; font-weight: bold; }
+        .disponivel-false { color: red; }
+        form { margin-top: 30px; padding: 20px; border: 1px solid #ccc; width: 400px; }
+        label, input { display: block; margin-bottom: 10px; }
+        input[type="text"], input[type="number"] { width: 90%; padding: 8px; }
+        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .checkbox-group { display: flex; align-items: center; }
+        .checkbox-group input { margin-left: 10px; width: auto; display: inline; }
+    </style>
+</head>
+<body>
+
+    <h1>📚 Sistema de Cadastro de Livros</h1>
+
+    <hr>
+    <h2>➕ Cadastrar Novo Livro</h2>
+    <form method="POST" action="/">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required>
+
+        <label for="autor">Autor:</label>
+        <input type="text" id="autor" name="autor" required>
+
+        <label for="ano_publicacao">Ano de Publicação:</label>
+        <input type="number" id="ano_publicacao" name="ano_publicacao" required min="1000" max="2100">
+
+        <div class="checkbox-group">
+            <label for="disponivel">Disponível para Empréstimo:</label>
+            <input type="checkbox" id="disponivel" name="disponivel" checked>
+        </div>
+        
+        <button type="submit">Cadastrar Livro</button>
+    </form>
+    <hr>
+
+    <h2>📖 Livros Cadastrados</h2>
+    
+    {% if livros %}
+        <table class="livros-lista">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Ano</th>
+                    <th>Disponibilidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for livro in livros %}
+                <tr>
+                    <td>{{ livro['id'] }}</td>
+                    <td>{{ livro['titulo'] }}</td>
+                    <td>{{ livro['autor'] }}</td>
+                    <td>{{ livro['ano_publicacao'] }}</td>
+                    <td>
+                        {% if livro['disponivel'] == 1 %}
+                            <span class="disponivel-true">Disponível</span>
+                        {% else %}
+                            <span class="disponivel-false">Indisponível</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum livro cadastrado. Use o formulário acima para adicionar um.</p>
+    {% endif %}
+
+</body>
+</html>
